@@ -8,7 +8,7 @@ const getApiKey = () => {
             return storedApiKey;
         }
     }
-    return null; // Return null if no key is found
+    return process.env.GEMINI_API_KEY || null;
 }
 
 const getAi = () => {
