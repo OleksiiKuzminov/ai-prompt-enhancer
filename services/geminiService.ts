@@ -8,7 +8,7 @@ const getApiKey = () => {
             return storedApiKey;
         }
     }
-    return process.env.API_KEY;
+    return null; // Return null if no key is found
 }
 
 const getAi = () => {
