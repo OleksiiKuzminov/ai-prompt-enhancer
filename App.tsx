@@ -5,6 +5,7 @@ import { PromptInput } from './components/PromptInput';
 import { AnalysisResults } from './components/AnalysisResults';
 import { SuggestionCard } from './components/SuggestionCard';
 import { Loader } from './components/Loader';
+import Settings from './components/Settings';
 import { enhancePrompt, generateCraftPrompt } from './services/geminiService';
 import { type AnalysisResult, type Suggestion } from './types';
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [craftResult, setCraftResult] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleEnhanceSubmit = useCallback(async () => {
     if (!prompt.trim()) {
@@ -74,9 +76,13 @@ const App: React.FC = () => {
     return "Optimized Suggestions";
   };
 
+  if (showSettings) {
+    return <Settings onSave={() => setShowSettings(false)} onCancel={() => setShowSettings(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground font-sans flex flex-col">
-      <Header />
+      <Header onSettingsClick={() => setShowSettings(true)} />
       <main className="flex-grow container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           

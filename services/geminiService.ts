@@ -1,12 +1,34 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { type AnalysisResult, responseSchema } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set. Please set it in your environment.");
+const getApiKey = () => {
+    if (typeof window !== 'undefined') {
+        const storedApiKey = localStorage.getItem('GEMINI_API_KEY');
+        if (storedApiKey !== null) { // Check for null, not just truthiness
+            return storedApiKey;
+        }
+    }
+    return process.env.API_KEY;
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAi = () => {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+        throw new Error("API_KEY not found. Please set it in your environment or in the settings.");
+    }
+    return new GoogleGenAI({ apiKey });
+}
+
+export const testApiKey = async (apiKey: string): Promise<boolean> => {
+    try {
+        const testAi = new GoogleGenAI({ apiKey });
+        await testAi.models.generateContent({ model: "gemini-2.5-flash", contents: "Test" });
+        return true;
+    } catch (error) {
+        console.error("API Key test failed:", error);
+        return false;
+    }
+};
 
 const buildMetaPrompt = (userPrompt: string, language: string): string => {
     return `
@@ -72,6 +94,7 @@ CRITICAL REQUIREMENT: The final output prompt must be written entirely in ${lang
 
 export const enhancePrompt = async (prompt: string, language: string): Promise<AnalysisResult> => {
     try {
+        const ai = getAi();
         const metaPrompt = buildMetaPrompt(prompt, language);
 
         const response = await ai.models.generateContent({
@@ -106,6 +129,7 @@ export const enhancePrompt = async (prompt: string, language: string): Promise<A
 
 export const generateCraftPrompt = async (promptTopic: string, language: string): Promise<string> => {
     try {
+        const ai = getAi();
         const metaPrompt = buildCraftMetaPrompt(promptTopic, language);
         
         const response = await ai.models.generateContent({
