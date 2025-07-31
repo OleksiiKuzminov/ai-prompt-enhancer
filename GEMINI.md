@@ -16,6 +16,7 @@ The application is built using React and TypeScript, with Vite as the build tool
 *   **Optimized Suggestions:** The application provides three diverse and improved versions of the user's prompt, each with a descriptive title.
 *   **C.R.A.F.T. Prompt Generation:** Users can enter a topic, and the application will generate a detailed prompt using the C.R.A.F.T. framework.
 *   **Multi-language Support:** The application can generate analysis and suggestions in multiple languages, including Czech, Dutch, English, French, German, Italian, Portuguese, Russian, Spanish, and Ukrainian.
+*   **API Key Management:** A settings page allows users to provide their own Gemini API key, which is stored locally in the browser. This allows users to use the application without having to clone the repository and set up their own environment.
 *   **Responsive UI:** The user interface is designed to be responsive and work well on different screen sizes.
 
 ## Project Structure
@@ -30,6 +31,7 @@ The project is organized into the following main directories and files:
         *   `Loader.tsx`: A loading spinner component.
         *   `PromptInput.tsx`: The main input area for the user's prompt.
         *   `SuggestionCard.tsx`: Displays a single prompt suggestion.
+        *   `Settings.tsx`:  Allows the user to configure their Gemini API key.
     *   **`services/`**: Contains the service for interacting with the Gemini API.
         *   `geminiService.ts`: Contains the functions for calling the Gemini API to enhance prompts and generate C.R.A.F.T. prompts.
     *   `App.tsx`: The main application component.
@@ -43,7 +45,7 @@ The project is organized into the following main directories and files:
 ## How to Run
 
 1.  Install the dependencies: `npm install`
-2.  Set the `GEMINI_API_KEY` in `.env.local` to your Gemini API key.
+2.  Set the `GEMINI_API_KEY` in `.env.local` to your Gemini API key. This is optional if you plan to use the settings page to provide your key.
 3.  Run the development server: `npm run dev`
 
 ## Dependencies
@@ -56,9 +58,10 @@ The project is organized into the following main directories and files:
 
 ## API Integration
 
-The application interacts with the Google Gemini API through the `geminiService.ts` file. This file contains two main functions:
+The application interacts with the Google Gemini API through the `geminiService.ts` file. This file contains three main functions:
 
 *   **`enhancePrompt(prompt: string, language: string)`**: This function takes a user's prompt and a language as input, and returns a `Promise` that resolves to an `AnalysisResult` object. The `AnalysisResult` object contains the analysis of the prompt and an array of suggestions.
 *   **`generateCraftPrompt(promptTopic: string, language:string)`**: This function takes a topic and a language as input, and returns a `Promise` that resolves to a string containing the generated C.R.A.F.T. prompt.
+*   **`testApiKey(apiKey: string)`**: This function takes an API key and returns a `Promise` that resolves to a boolean indicating whether the key is valid.
 
 The `geminiService.ts` file also defines the meta-prompts that are used to instruct the Gemini model on how to analyze the user's prompt and generate the suggestions and C.R.A.F.T. prompts.
