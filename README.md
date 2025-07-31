@@ -4,6 +4,8 @@ This project is a web-based application called "Prompt Enhancer". It is designed
 
 The application is built using React and TypeScript, with Vite as the build tool. It utilizes the Google Gemini API for its core AI-powered features.
 
+[Link to the page](https://oleksiikuzminov.github.io/ai-prompt-enhancer/)
+
 ## Key Features
 
 *   **Prompt Analysis:** Users can submit a prompt and receive a detailed analysis of its quality based on the following criteria:
